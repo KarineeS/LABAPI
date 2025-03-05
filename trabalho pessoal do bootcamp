@@ -1,0 +1,259 @@
+src
+├── main
+│   ├── java
+│   │   └── com
+│   │       └── example
+│   │           └── springbootapi
+│   │               ├── SpringbootapiApplication.java
+│   │               └── controller
+│   │                   └── UserController.java
+│   │               └── model
+│   │                   └── User.java
+│   │               └── repository
+│   │                   └── UserRepository.java
+├── resources
+│   ├── application.properties
+
+spring.datasource.url=jdbc:h2:mem:testdb
+spring.datasource.driverClassName=org.h2.Driver
+spring.datasource.username=sa
+spring.datasource.password=password
+spring.jpa.hibernate.ddl-auto=update
+spring.h2.console.enabled=true
+
+package com.example.springbootapi.model;
+
+import javax.persistence.Entity;
+import javax.persistence.Id;
+
+@Entity
+public class User {
+
+    @Id
+    private Long id;
+    private String name;
+    private String email;
+
+    // Getters e Setters
+}
+
+package com.example.springbootapi.repository;
+
+import com.example.springbootapi.model.User;
+import org.springframework.data.jpa.repository.JpaRepository;
+
+public interface UserRepository extends JpaRepository<User, Long> {
+}
+
+package com.example.springbootapi.controller;
+
+import com.example.springbootapi.model.User;
+import com.example.springbootapi.repository.UserRepository;
+import org.springframework.web.bind.annotation.*;
+
+import java.util.List;
+
+@RestController
+@RequestMapping("/users")
+public class UserController {
+
+    private final UserRepository userRepository;
+
+    public UserController(UserRepository userRepository) {
+        this.userRepository = userRepository;
+    }
+
+    @GetMapping
+    public List<User> getAllUsers() {
+        return userRepository.findAll();
+    }
+
+    @PostMapping
+    public User createUser(@RequestBody User user) {
+        return userRepository.save(user);
+    }
+}
+
+./mvnw spring-boot:run
+
+(exemplos 1:  )
+package com.seuusuario.meuprojeto.model;
+
+import jakarta.persistence.*;
+import lombok.*;
+
+@Entity
+@Data
+@NoArgsConstructor
+@AllArgsConstructor
+public class Usuario {
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    private Long id;
+    private String nome;
+    private String email;
+}
+
+package com.seuusuario.meuprojeto.repository;
+
+import com.seuusuario.meuprojeto.model.Usuario;
+import org.springframework.data.jpa.repository.JpaRepository;
+import org.springframework.stereotype.Repository;
+
+@Repository
+public interface UsuarioRepository extends JpaRepository<Usuario, Long> {
+}
+
+package com.seuusuario.meuprojeto.controller;
+
+import com.seuusuario.meuprojeto.model.Usuario;
+import com.seuusuario.meuprojeto.repository.UsuarioRepository;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.web.bind.annotation.*;
+
+import java.util.List;
+
+@RestController
+@RequestMapping("/usuarios")
+public class UsuarioController {
+
+    @Autowired
+    private UsuarioRepository usuarioRepository;
+
+    @GetMapping
+    public List<Usuario> listarUsuarios() {
+        return usuarioRepository.findAll();
+    }
+
+    @PostMapping
+    public Usuario criarUsuario(@RequestBody Usuario usuario) {
+        return usuarioRepository.save(usuario);
+    }
+}
+
+springdoc.api-docs.enabled=true
+springdoc.swagger-ui.path=/swagger-ui.html
+
+git init
+git add .
+git commit -m "Primeiro commit - API criada"
+git remote add origin https://github.com/seuusuario/meu-projeto.git
+git branch -M main
+git push -u origin main
+package com.exemplo.config;
+
+import org.springframework.context.annotation.Bean;
+import org.springframework.context.annotation.Configuration;
+import springfox.documentation.builders.PathSelectors;
+import springfox.documentation.builders.RequestHandlerSelectors;
+import springfox.documentation.spi.DocumentationType;
+import springfox.documentation.spring.web.plugins.Docket;
+
+@Configuration
+public class SwaggerConfig {
+    
+    @Bean
+    public Docket api() {
+        return new Docket(DocumentationType.SWAGGER_2)
+                .select()
+                .apis(RequestHandlerSelectors.basePackage("com.exemplo"))
+                .paths(PathSelectors.any())
+                .build();
+    }
+}
+
+# Configurações do banco de dados H2
+spring.datasource.url=jdbc:h2:mem:testdb;DB_CLOSE_DELAY=-1;DB_CLOSE_ON_EXIT=FALSE
+spring.datasource.driverClassName=org.h2.Driver
+spring.datasource.username=sa
+spring.datasource.password=password
+spring.jpa.database-platform=org.hibernate.dialect.H2Dialect
+spring.h2.console.enabled=true
+
+# Configuração do servidor para produção
+server.port=8080
+
+package com.exemplo.controller;
+
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.RestController;
+
+@RestController
+public class HelloWorldController {
+
+    @GetMapping("/hello")
+    public String hello() {
+        return "Hello, World!";
+    }
+}
+
+(exemplo 2)
+package com.seuusuario.meuprojeto.controller;
+
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RestController;
+
+@RestController
+@RequestMapping("/api")
+public class MeuController {
+
+    @GetMapping("/saudacao")
+    public String saudacao() {
+        return "Olá, bem-vindo ao meu projeto!";
+    }
+}
+
+"oficial com toadas as dependencia solicitadas "
+my-springboot-api
+ ├── src
+ │   ├── main
+ │   │   ├── java
+ │   │   │   └── com
+ │   │   │       └── example
+ │   │   │           └── myapp
+ │   │   ├── resources
+ │   │   │   ├── application.properties
+ │   │   │   └── static
+ └── pom.xml
+
+package com.example.myapp.controller;
+
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RestController;
+
+@RestController
+@RequestMapping("/api/users")
+public class UserController {
+
+    @GetMapping
+    public String getUsers() {
+        return "Lista de usuários";
+    }
+}
+
+package com.example.myapp;
+
+import org.springframework.boot.SpringApplication;
+import org.springframework.boot.autoconfigure.SpringBootApplication;
+
+@SpringBootApplication
+public class MyApplication {
+
+    public static void main(String[] args) {
+        SpringApplication.run(MyApplication.class, args);
+    }
+}
+
+server.port=8080
+spring.datasource.url=jdbc:h2:mem:testdb
+spring.datasource.driverClassName=org.h2.Driver
+spring.datasource.username=sa
+spring.datasource.password=password
+spring.jpa.database-platform=org.hibernate.dialect.H2Dialect
+
+./mvnw spring-boot:run
+
+
+
